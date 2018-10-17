@@ -5,6 +5,7 @@
   S: string;
   H, p: real;
   chars: array [1..10000] of integer;
+  words: array [1..100000] of string;
 begin
   assign(f, 'my.txt');
   reset(f);
@@ -20,12 +21,12 @@ begin
   
   for i := word('а') to word('я') do begin
     p := chars[i] / sum;
-    writeln(i: 5, ': ', chr(i), ': ', chars[i], '  p = ', p: 5: 4);
+    writeln(i: 5, ': ', chr(i), ': ', chars[i], '  p = ', p: 4: 3);
     if (chars[i] > 0) then
-      H -= (chars[i] / sum) * (ln(chars[i] / sum) / ln(33));
+      H -= (chars[i] / sum) * (ln(chars[i] / sum) / ln(2));
   end;
   
-  writeln('H = ', H);
+  writeln('H = ', H:4:3);
   
   close(f);
 end.
