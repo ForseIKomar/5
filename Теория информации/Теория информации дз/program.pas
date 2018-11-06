@@ -1,7 +1,25 @@
-﻿var
+﻿
+function isRussian(S: string): boolean;
+var
+  i: integer;
+  b: boolean;
+begin
+  b := true;
+  for i := 1 to length(S) do begin
+  
+      if (S[i] >= 'А') and (S[i] <= 'Я') then
+        S[i] := char(word(S[i]) - word('А') + word('а'));
+        
+      if !((S[i] >= 'а') and (S[i] <= 'я')) then
+        b := false;
+  end;
+  isRussian := b;
+end;
+
+var
   f: text;
   i: integer;
-  sum: integer;
+  sum, wsum: integer;
   S: string;
   H, p: real;
   chars: array [1..10000] of integer;
@@ -15,8 +33,9 @@ begin
       if (S[i] >= 'А') and (S[i] <= 'Я') then
         S[i] := char(word(S[i]) - word('А') + word('а'));
       chars[ord(S[i])] += 1;
+      if (S[i] >= 'а') and (S[i] <= 'я') then
+        sum += 1;
     end;
-    sum += length(S);
   end;
   
   for i := word('а') to word('я') do begin
