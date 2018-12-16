@@ -1,0 +1,111 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
+using namespace std;
+
+const int siz = 10;
+
+int** pathfinder(int x, int y, int to_x, int to_y, int** matr) {
+
+	int **result = new int*[siz];
+	for (int i = 0; i < siz; ++i) {
+		result[i] = new int[siz];
+		for (int j = 0; j < siz; ++j) {
+			result[i][j] = -matr[i][j] - 1;
+		}
+	}
+
+	if (matr[y][x] == 1) {
+		return result;
+	}
+
+	const int dx[4] = { 1, 0, -1, 0 };
+	const int dy[4] = { 0, -1, 0, 1 };
+
+	vector<int> vx, vy;
+	vx.push_back(x);
+	vy.push_back(y);
+	result[y][x] = 0;
+	int currI = 0;
+
+	while (currI < vx.size()) {
+		for (int i = 0; i < 4; ++i) {
+			int xx = vx[currI] + dx[i];
+			int yy = vy[currI] + dy[i];
+			if ((xx >= 0) && (xx < siz) && (yy >= 0) && (yy < siz)) {
+				if (result[yy][xx] == -1) {
+					result[yy][xx] = result[vy[currI]][vx[currI]] + 1;
+					vx.push_back(xx);
+					vy.push_back(yy);
+				}
+			}
+		}
+		currI++;
+	}
+	int px = to_x;
+	int py = to_y;
+	int t = true;
+	while ((px != x) && (py != y) && (t)) {
+		matr[py][px] = result[py][px];
+		t = false;
+		for (int i = 0; i < 4; ++i) {
+			int xx = px + dx[i];
+			int yy = py + dy[i];
+			if ((xx >= 0) && (xx < siz) && (yy >= 0) && (yy < siz)) {
+				if (result[yy][xx] + 1 == result[py][px]) {
+					px = xx;
+					py = yy;
+					t = true;
+				}
+			}
+		}
+
+	}
+	return matr;
+}
+
+int main()
+{
+	srand(time(NULL));
+	int **matrix = new int*[siz];
+	for (int i = 0; i < siz; ++i) {
+		matrix[i] = new int[siz];
+		for (int j = 0; j < siz; ++j) {
+			matrix[i][j] = rand() % 3 == 0;
+		}
+	}
+
+	for (int i = 0; i < siz; ++i) {
+		for (int j = 0; j < siz; ++j) {
+			int k = 3;
+			if (matrix[i][j] < 0)
+				k--;
+			if (matrix[i][j] >= 10)
+				k--;
+			for (int o = 0; o < k; ++o)
+				cout << " ";
+			cout << matrix[i][j];
+		}
+		cout << endl;
+	}
+	cout << endl;
+	cout << endl;
+
+	matrix = pathfinder(0, 0, 9, 9, matrix);
+
+	for (int i = 0; i < siz; ++i) {
+		for (int j = 0; j < siz; ++j) {
+			int k = 3;
+			if (matrix[i][j] < 0)
+				k--;
+			if (matrix[i][j] >= 10)
+				k--;
+			for (int o = 0; o < k; ++o)
+				cout << " ";
+			cout << matrix[i][j];
+		}
+		cout << endl;
+	}
+
+}
