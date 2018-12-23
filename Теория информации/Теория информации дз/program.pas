@@ -10,7 +10,7 @@ begin
       if (S[i] >= 'А') and (S[i] <= 'Я') then
         S[i] := char(word(S[i]) - word('А') + word('а'));
         
-      if !((S[i] >= 'а') and (S[i] <= 'я')) then
+      if not((S[i] >= 'а') and (S[i] <= 'я')) then
         b := false;
   end;
   isRussian := b;
